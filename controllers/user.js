@@ -63,4 +63,105 @@ const authenticate = async (request, response) => {
   response.status(200).json(res);
 };
 
-export { signUp, authenticate };
+const confirmUser = async (request, response) => {
+  // * Retrieve the token from the params.
+  const { token } = request.params;
+
+  const user = await User.findOne({ token });
+
+  if (!token) {
+    const error = new Error("Invalid token");
+    response.status(403).json({ errorMessage: error.message });
+    return;
+  }
+
+  // * Change confirmed to true and remove the token.
+  try {
+    user.confirmed = true;
+    user.token = "";
+    await user.save();
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ errorMessage: error.message });
+  }
+
+  response.status(200).json(null);
+};
+
+const forgotPassword = async (request, response) => {
+  const { email } = request.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    const error = new Error("Invalid token");
+    response.status(403).json({ errorMessage: error.message });
+    return;
+  }
+
+  try {
+    user.token = generateToken();
+    await user.save();
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ errorMessage: error.message });
+  }
+
+  response.status(200).json({
+    message: "We've sent an email with the instructions to reset the password",
+  });
+};
+
+const verifyToken = async (request, response) => {
+  const { token } = request.params;
+
+  const user = await User.findOne({ token });
+
+  if (!user) {
+    const error = new Error("Invalid token");
+    response.status(403).json({ errorMessage: error.message });
+    return;
+  }
+
+  response.status(200).json(null);
+};
+
+const changePassword = async (request, response) => {
+  const { password } = request.body;
+  const { token } = request.params;
+
+  const user = await User.findOne({ token });
+
+  if (!user) {
+    const error = new Error("Invalid token");
+    response.status(403).json({ errorMessage: error.message });
+    return;
+  }
+
+  try {
+    user.password = password;
+    user.token = "";
+    await user.save();
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ errorMessage: error.message });
+  }
+
+  response.status(200).json({
+    message: "Password modified successfully",
+  });
+};
+
+const userProfile = async (request, response) => {
+  console.log("From get user profile.");
+};
+
+export {
+  signUp,
+  authenticate,
+  confirmUser,
+  forgotPassword,
+  verifyToken,
+  changePassword,
+  userProfile,
+};
