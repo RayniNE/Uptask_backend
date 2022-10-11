@@ -153,7 +153,8 @@ const changePassword = async (request, response) => {
 };
 
 const userProfile = async (request, response) => {
-  console.log("From get user profile.");
+  const { user } = request;
+  console.log(user);
 };
 
 export {
