@@ -9,7 +9,7 @@ const signUp = async (request, response) => {
     const exists = await User.findOne({ email });
 
     if (exists) {
-      const error = new Error("Email already exists");
+      const error = new Error("El correo ya existe");
       response.status(400).json({ errorMessage: error.message });
       return;
     }
@@ -32,14 +32,14 @@ const authenticate = async (request, response) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    const error = new Error("User not found");
+    const error = new Error("Usuario no encontrado");
     response.status(404).json({ errorMessage: error.message });
     return;
   }
 
   // * 2-) Check if the user has been confirmed.
   if (!user.confirmed) {
-    const error = new Error("User not verified");
+    const error = new Error("Usuario no verificado");
     response.status(403).json({ errorMessage: error.message });
     return;
   }
@@ -47,7 +47,7 @@ const authenticate = async (request, response) => {
   // * 3-) Verify if the password provided matches the one stored in the DB.
   const match = await user.checkPassword(password);
   if (!match) {
-    const error = new Error("Wrong password");
+    const error = new Error("Contraseña incorrecta");
     response.status(403).json({ errorMessage: error.message });
     return;
   }
@@ -70,7 +70,7 @@ const confirmUser = async (request, response) => {
   const user = await User.findOne({ token });
 
   if (!token) {
-    const error = new Error("Invalid token");
+    const error = new Error("Token inválido");
     response.status(403).json({ errorMessage: error.message });
     return;
   }
@@ -94,7 +94,7 @@ const forgotPassword = async (request, response) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    const error = new Error("Invalid token");
+    const error = new Error("Token inválido");
     response.status(403).json({ errorMessage: error.message });
     return;
   }
@@ -108,7 +108,8 @@ const forgotPassword = async (request, response) => {
   }
 
   response.status(200).json({
-    message: "We've sent an email with the instructions to reset the password",
+    message:
+      "Hemos enviado un correo con las instrucciones para resetear la contraseña",
   });
 };
 
@@ -118,7 +119,7 @@ const verifyToken = async (request, response) => {
   const user = await User.findOne({ token });
 
   if (!user) {
-    const error = new Error("Invalid token");
+    const error = new Error("Token inválido");
     response.status(403).json({ errorMessage: error.message });
     return;
   }
@@ -133,7 +134,7 @@ const changePassword = async (request, response) => {
   const user = await User.findOne({ token });
 
   if (!user) {
-    const error = new Error("Invalid token");
+    const error = new Error("Token inválido");
     response.status(403).json({ errorMessage: error.message });
     return;
   }
@@ -148,7 +149,7 @@ const changePassword = async (request, response) => {
   }
 
   response.status(200).json({
-    message: "Password modified successfully",
+    message: "Contraseña modificada correctamente!",
   });
 };
 
