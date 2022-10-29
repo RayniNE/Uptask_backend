@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/user.js";
 import projectRouter from "./routes/project.js";
+import taskRouter from "./routes/task.js";
 
 // Get all the envs loaded.
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(express.json());
 // Start routing the different endpoints.
 app.use("/api/user", userRouter);
 app.use("/api/project", projectRouter);
+app.use("/api/task", taskRouter);
 
 const PORT = process.env.PORT || 5000;
 

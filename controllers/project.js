@@ -18,7 +18,7 @@ const newProject = async (req, res) => {
   } catch (error) {
     console.log(error);
     const err = new Error("Ha ocurrido un error");
-    res.status(500).json({ errorMessage: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -31,13 +31,13 @@ const getProject = async (req, res) => {
 
     if (!project) {
       const error = new Error("Projecto no encontrado");
-      res.status(404).json({ errorMessage: error.message });
+      res.status(404).json({ message: error.message });
       return;
     }
 
     if (user._id.toString() !== project.creator.toString()) {
       const error = new Error("Acción no válida");
-      res.status(401).json({ errorMessage: error.message });
+      res.status(401).json({ message: error.message });
       return;
     }
 
@@ -45,7 +45,7 @@ const getProject = async (req, res) => {
   } catch (error) {
     console.log(error);
     const err = new Error("Ha ocurrido un error");
-    res.status(500).json({ errorMessage: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -58,13 +58,13 @@ const editProject = async (req, res) => {
 
     if (!project) {
       const error = new Error("Projecto no encontrado");
-      res.status(404).json({ errorMessage: error.message });
+      res.status(404).json({ message: error.message });
       return;
     }
 
     if (user._id.toString() !== project.creator.toString()) {
       const error = new Error("Acción no válida");
-      res.status(401).json({ errorMessage: error.message });
+      res.status(401).json({ message: error.message });
       return;
     }
 
@@ -79,7 +79,7 @@ const editProject = async (req, res) => {
   } catch (error) {
     console.log(error);
     const err = new Error("Ha ocurrido un error");
-    res.status(500).json({ errorMessage: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -92,23 +92,23 @@ const deleteProject = async (req, res) => {
 
     if (!project) {
       const error = new Error("Projecto no encontrado");
-      res.status(404).json({ errorMessage: error.message });
+      res.status(404).json({ message: error.message });
       return;
     }
 
     if (user._id.toString() !== project.creator.toString()) {
       const error = new Error("Acción no válida");
-      res.status(401).json({ errorMessage: error.message });
+      res.status(401).json({ message: error.message });
       return;
     }
 
-    await project.delete();
+    await project.deleteOne();
 
-    res.status(202).json(null);
+    res.status(200).json({ message: "Proyecto eliminado" });
   } catch (error) {
     console.log(error);
     const err = new Error("Ha ocurrido un error");
-    res.status(500).json({ errorMessage: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

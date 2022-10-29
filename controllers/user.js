@@ -10,7 +10,7 @@ const signUp = async (request, response) => {
 
     if (exists) {
       const error = new Error("El correo ya existe");
-      response.status(400).json({ errorMessage: error.message });
+      response.status(400).json({ message: error.message });
       return;
     }
 
@@ -21,7 +21,7 @@ const signUp = async (request, response) => {
     response.status(201).send(null);
   } catch (error) {
     console.log(error);
-    response.status(500).json({ errorMessage: error.message });
+    response.status(500).json({ message: error.message });
   }
 };
 
@@ -33,14 +33,14 @@ const authenticate = async (request, response) => {
 
   if (!user) {
     const error = new Error("Usuario no encontrado");
-    response.status(404).json({ errorMessage: error.message });
+    response.status(404).json({ message: error.message });
     return;
   }
 
   // * 2-) Check if the user has been confirmed.
   if (!user.confirmed) {
     const error = new Error("Usuario no verificado");
-    response.status(403).json({ errorMessage: error.message });
+    response.status(403).json({ message: error.message });
     return;
   }
 
@@ -48,7 +48,7 @@ const authenticate = async (request, response) => {
   const match = await user.checkPassword(password);
   if (!match) {
     const error = new Error("Contraseña incorrecta");
-    response.status(403).json({ errorMessage: error.message });
+    response.status(403).json({ message: error.message });
     return;
   }
 
@@ -71,7 +71,7 @@ const confirmUser = async (request, response) => {
 
   if (!token) {
     const error = new Error("Token inválido");
-    response.status(403).json({ errorMessage: error.message });
+    response.status(403).json({ message: error.message });
     return;
   }
 
@@ -82,7 +82,7 @@ const confirmUser = async (request, response) => {
     await user.save();
   } catch (error) {
     console.log(error);
-    response.status(500).json({ errorMessage: error.message });
+    response.status(500).json({ message: error.message });
   }
 
   response.status(200).json(null);
@@ -95,7 +95,7 @@ const forgotPassword = async (request, response) => {
 
   if (!user) {
     const error = new Error("Token inválido");
-    response.status(403).json({ errorMessage: error.message });
+    response.status(403).json({ message: error.message });
     return;
   }
 
@@ -104,7 +104,7 @@ const forgotPassword = async (request, response) => {
     await user.save();
   } catch (error) {
     console.log(error);
-    response.status(500).json({ errorMessage: error.message });
+    response.status(500).json({ message: error.message });
   }
 
   response.status(200).json({
@@ -120,7 +120,7 @@ const verifyToken = async (request, response) => {
 
   if (!user) {
     const error = new Error("Token inválido");
-    response.status(403).json({ errorMessage: error.message });
+    response.status(403).json({ message: error.message });
     return;
   }
 
@@ -135,7 +135,7 @@ const changePassword = async (request, response) => {
 
   if (!user) {
     const error = new Error("Token inválido");
-    response.status(403).json({ errorMessage: error.message });
+    response.status(403).json({ message: error.message });
     return;
   }
 
@@ -145,7 +145,7 @@ const changePassword = async (request, response) => {
     await user.save();
   } catch (error) {
     console.log(error);
-    response.status(500).json({ errorMessage: error.message });
+    response.status(500).json({ message: error.message });
   }
 
   response.status(200).json({
